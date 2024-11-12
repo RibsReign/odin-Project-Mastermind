@@ -1,4 +1,6 @@
-require_relative 'lib/board'
+# frozen_string_literal: true
+
+require_relative 'lib/game'
 require_relative 'lib/player'
 VALID_ROLES = %w[p m].freeze
 
@@ -17,3 +19,5 @@ end
 
 player = ask_player
 p player.name
+game = Game.new
+game.make_board
