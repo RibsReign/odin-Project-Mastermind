@@ -11,10 +11,16 @@ class Game
     @guess = ''
   end
 
-  def make_board
+  def pc_pattern
     @pattern.each_index do |index|
       @pattern[index] = COLORS[rand(0..5)]
     end
+    p @pattern
+  end
+
+  def change_pattern(index, color)
+    color = COLORS[VALID_COLORS.index(color)] if VALID_COLORS.include?(color)
+    @pattern[index] = color
     p @pattern
   end
 end
