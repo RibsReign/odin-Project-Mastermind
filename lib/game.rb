@@ -1,14 +1,101 @@
 # frozen_string_literal: true
 
 COLORS = %w[red green yellow blue black orange].freeze
+VALID_COLORS = %w[r g y blu bla o].freeze
+
 # Board
 class Game
-  attr_reader :pattern, :info, :guess
+  attr_reader :pattern, :info, :hint
 
   def initialize
     @pattern = [0, 0, 0, 0]
     @info = 'No Hits'
-    @guess = ''
+  end
+
+  def play(mode)
+    if mode == 'm'
+      play_m
+    else
+      pc_pattern
+      play_p
+    end
+  end
+
+  def play_p
+    12.times do
+      return if check_guess(ask_for_guess)
+    end
+  end
+
+  def count_hits(guess_array)
+    hits = 0
+    guess_array.each_with_index do |guess, i|
+      hits += 1 if @pattern[i] == guess
+    end
+    hits
+  end
+
+  def count_wrong_holes(guess_array)
+    pattern_colors = @pattern.tally
+    guess_array.each_with_index do |guess, i|
+      pattern_colors[guess] -= 1 if @pattern[i] == guess
+    end
+
+    wrong_holes = 0
+    guess_array.each_with_index do |guess, i|
+      next if @pattern[i] == guess
+
+      if pattern_colors[guess].to_i > 0
+        wrong_holes += 1
+        pattern_colors[guess] -= 1
+      end
+    end
+    wrong_holes
+  end
+
+  def check_guess(guess_array)
+    if @pattern == guess_array
+      p "You've guessed the pattern!"
+      return true
+    end
+
+    hits = count_hits(guess_array)
+    wrong_holes = count_wrong_holes(guess_array)
+
+    hint = (['hit'] * hits) + (['wrong_hole'] * wrong_holes)
+    p hint
+    false
+  end
+
+  def ask_for_guess
+    guess_array = []
+    4.times do
+      color = ''
+      loop do
+        p "Enter a color: (#{COLORS.join(' ')})"
+        color = gets.chomp
+        break if COLORS.include?(color)
+
+        p 'Invalid color. Try again.'
+      end
+      guess_array << color
+    end
+    p guess_array
+    guess_array
+  end
+
+  def ask_for_colors
+    4.times do |index|
+      color = ''
+      loop do
+        p "Enter a color: (#{COLORS.join(' ')})"
+        color = gets.chomp
+        break if COLORS.include?(color) || VALID_COLORS.include?(color)
+
+        p 'Invalid color. Try again.'
+      end
+      change_pattern(index, color)
+    end
   end
 
   def pc_pattern
