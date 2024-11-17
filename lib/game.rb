@@ -5,11 +5,15 @@ VALID_COLORS = %w[r g y blu bla o].freeze
 
 # Board
 class Game
-  attr_reader :pattern, :info, :hint
+  attr_reader :pattern, :info, :hint, :round
 
   def initialize
     @pattern = [0, 0, 0, 0]
     @info = 'No Hits'
+    @round = 1
+    @last_guess = nil
+    @known_positions = Array.new(4, nil)
+    @wrong_colors = []
   end
 
   def play(mode)
@@ -32,7 +36,7 @@ class Game
     @guess = [0, 0, 0, 0]
     puts "The code you entered is #{@pattern}"
     p 'The computer is gonna try to guess your colors now!'
-    broke_out = fast
+    broke_out = false
     12.times do
       broke_out = check_guess(ask_pc_for_colors)
       break if broke_out
@@ -127,15 +131,11 @@ class Game
     color = COLORS[VALID_COLORS.index(color)] if VALID_COLORS.include?(color)
     @pattern[index] = color
   end
-end
 
-def ask_pc_for_colors
-  guess_array = []
-  4.times do |index|
-    color = COLORS[rand(0..5)]
-    guess_array[index] = color
+  def ask_pc_for_colors
+    guess_array = pc_logic
+    puts "The computer guessed #{guess_array}"
+    sleep(1)
+    guess_array
   end
-  puts "The computer guessed #{guess_array}"
-  sleep(1)
-  guess_array
 end
