@@ -6,6 +6,7 @@ VALID_ROLES = %w[p m].freeze
 def ask_player
   p 'Hello, welcome to Mastermind, what is your name?'
   name = gets.chomp
+  p "Hello #{name}."
   loop do
     p 'Will you be playing as a player[p] or as the Mastermind[m]?'
     role = gets.chomp
@@ -20,12 +21,9 @@ def set_mode(player, game)
   if player.role == 'p'
     'p'
   elsif player.role == 'm'
-    game.ask_for_colors(game)
     'm'
   end
 end
-
-
 
 game = Game.new
 player = ask_player

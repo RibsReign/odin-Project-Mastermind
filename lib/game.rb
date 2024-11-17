@@ -27,6 +27,23 @@ class Game
     end
   end
 
+  def play_m
+    ask_for_colors
+    @guess = [0, 0, 0, 0]
+    puts "The code you entered is #{@pattern}"
+    p 'The computer is gonna try to guess your colors now!'
+    broke_out = fast
+    12.times do
+      broke_out = check_guess(ask_pc_for_colors)
+      break if broke_out
+    end
+    if broke_out
+      p 'The computer guessed your pattern in '
+    else
+      p "The computer couldn't guess your pattern in 12 turns. You win!"
+    end
+  end
+
   def count_hits(guess_array)
     hits = 0
     guess_array.each_with_index do |guess, i|
@@ -55,15 +72,15 @@ class Game
 
   def check_guess(guess_array)
     if @pattern == guess_array
-      p "You've guessed the pattern!"
+      p 'The pattern is correct!'
       return true
     end
 
     hits = count_hits(guess_array)
     wrong_holes = count_wrong_holes(guess_array)
 
-    hint = (['hit'] * hits) + (['wrong_hole'] * wrong_holes)
-    p hint
+    @hint = (['hit'] * hits) + (['wrong_hole'] * wrong_holes)
+    p @hint
     false
   end
 
@@ -95,6 +112,7 @@ class Game
         p 'Invalid color. Try again.'
       end
       change_pattern(index, color)
+      p @pattern
     end
   end
 
@@ -108,6 +126,16 @@ class Game
   def change_pattern(index, color)
     color = COLORS[VALID_COLORS.index(color)] if VALID_COLORS.include?(color)
     @pattern[index] = color
-    p @pattern
   end
+end
+
+def ask_pc_for_colors
+  guess_array = []
+  4.times do |index|
+    color = COLORS[rand(0..5)]
+    guess_array[index] = color
+  end
+  puts "The computer guessed #{guess_array}"
+  sleep(1)
+  guess_array
 end
