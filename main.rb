@@ -1,31 +1,23 @@
 # frozen_string_literal: true
 
 require_relative 'lib/game'
-require_relative 'lib/player'
-VALID_ROLES = %w[p m].freeze
-def ask_player
-  p 'Hello, welcome to Mastermind, what is your name?'
-  name = gets.chomp
-  p "Hello #{name}."
-  loop do
-    p 'Will you be playing as a player[p] or as the Mastermind[m]?'
-    role = gets.chomp
-    if VALID_ROLES.include?(role)
-      player = Player.new(name, role)
-      return player
-    end
-  end
+require_relative 'lib/humanplayer'
+require_relative 'lib/computerplayer'
+
+def intro
+  puts <<-INTRO
+  Welcome to Mastermind!
+
+  Mastermind is a code-breaking game for two players.
+
+  In this version it's you against the computer - you get to choose whether to be
+  code-breaker or code-maker.
+
+  The code-breaker gets 12 attempts to guess the code set by the code-maker.
+
+  Good luck!! You'll need it... The computer is good!
+
+  INTRO
 end
 
-def set_mode(player, game)
-  if player.role == 'p'
-    'p'
-  elsif player.role == 'm'
-    'm'
-  end
-end
-
-game = Game.new
-player = ask_player
-mode = set_mode(player, game)
-game.play(mode)
+Game.new.choose_gamemode
