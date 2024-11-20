@@ -20,4 +20,4 @@ def intro
   INTRO
 end
 
-Game.new.choose_gamemode
+Game.new.choose_game_mode
