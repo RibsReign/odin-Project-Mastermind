@@ -1,5 +1,7 @@
-require_relative 'humanplayer'
-require_relative 'computerplayer'
+# frozen_string_literal: true
+
+require_relative 'HumanPlayer'
+require_relative 'ComputerPlayer'
 
 # Class that sets up everything needed for the game to execute
 class Game
