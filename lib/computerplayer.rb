@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-COLORS = %w[red green yellow blue black orange].freeze
 # Class that defines all the behaviors that the computer controlled player can do
 class ComputerPlayer
   def initialize
@@ -20,4 +19,4 @@ class ComputerPlayer
   def computer_guess_player_code
   end
 end
-ComputerPlayer.new.computer_code_generate
+# ComputerPlayer.new.computer_code_generate

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-COLORS = %w[red green yellow blue black orange].freeze
 # Class that defines all the behaviors of the human player
 class HumanPlayer
   def initialize
@@ -8,13 +7,13 @@ class HumanPlayer
   end
 
   def player_code_input
-    4.times do
+    4.times do |index|
       loop do
         p "Enter a color: [#{COLORS.join(' ')}]"
         input = gets.chomp.downcase
         matches = COLORS.select { |color| color.start_with?(input) }
         if matches.length == 1
-          @guess << matches.first
+          @guess[index] = matches.first
           break
         end
         puts 'Invalid color. Try again.'
@@ -23,8 +22,10 @@ class HumanPlayer
     p @guess
   end
 
-  def computer_code_guessed
-  end
+  # def give_hints(computer_code, player_guess)
+  #   print_hits(computer_code, player_guess)
+  #   print_wrong_positions(computer_code, player_guess)
+  # end
 end
 
-HumanPlayer.new.player_code_input
+# HumanPlayer.new.player_code_input
