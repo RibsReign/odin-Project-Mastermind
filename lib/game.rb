@@ -40,14 +40,14 @@ class Game
 
   def play_as_code_maker
     player_code = @player.player_code_input
-    computer_guess = @computer.computer_code_generate
+    @computer_guess = @computer.computer_code_generate
     round = 0
     12.times do
-      break if player_code == computer_guess || round == 12
+      break if player_code == @computer_guess || round == 12
 
       puts "The computer has #{12 - round} rounds left."
       round += 1
-      @computer.computer_guess_player_code(player_code, computer_guess)
+      @computer.computer_guess_player_code(player_code)
     end
     if round >= 12
       puts "The computer didn't manage to guess your code at all, good job :)"
