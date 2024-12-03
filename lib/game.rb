@@ -27,7 +27,7 @@ class Game
     computer_code = @computer.computer_code_generate
     round = 0
     12.times do
-      puts "You have #{12 - round} rounds left."
+      puts "\nYou have #{12 - round} rounds left."
       round += 1
       player_guess = @player.player_code_input
       break if computer_code == player_guess
@@ -45,14 +45,15 @@ class Game
     12.times do
       break if player_code == @computer_guess || round == 12
 
-      puts "The computer has #{12 - round} rounds left."
+      sleep(1)
+      puts "\n\nThe computer has #{12 - round} rounds left."
       round += 1
       @computer.computer_guess_player_code(player_code)
     end
-    if round >= 12
+    if round >= 12 && player_code != @computer_guess
       puts "The computer didn't manage to guess your code at all, good job :)"
     else
-      puts "The computer has guessed your code in #{rounds} rounds."
+      puts "\n\nThe computer has guessed your code in #{round} rounds."
     end
   end
 end

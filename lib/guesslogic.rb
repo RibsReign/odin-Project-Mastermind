@@ -15,16 +15,24 @@ class GuessLogic
 
   def print_wrong_spots(code, guess)
     @hints = []
-    4.times do |guess_index|
-      next if code[guess_index] == guess[guess_index]
-
-      code_color_count = code.count { |code_color| code_color == guess[guess_index] }
-      @hits = color_hits_amount(code, guess, guess[guess_index])
-      next unless @hits != code_color_count
-
-      @hints << 'wrong spot'
+    unmatched_code = []
+    unmatched_guess = []
+    4.times do |index|
+      if code[index] != guess[index]
+        unmatched_code << code[index]
+        unmatched_guess << guess[index]
+      end
     end
-    p @hints
+    unmatched_guess.each do |guess_color|
+      if unmatched_code.include?(guess_color)
+        @hints << 'wrong spot'
+        unmatched_code.delete_at(unmatched_code.index(guess_color)) # Remove matched color
+      end
+    end
+    @hints.length.times do
+      print "'wrong spot'"
+    end
+    @hints
   end
 
   def get_wrong_spots(code, guess)
@@ -34,9 +42,9 @@ class GuessLogic
 
       code_color_count = code.count { |code_color| code_color == guess[guess_index] }
       @hits = color_hits_amount(code, guess, guess[guess_index])
-      next unless @hits != code_color_count
+      next unless @hits < code_color_count
 
-      @hints[index] = 'wrong spot'
+      @hints[guess_index] = 'wrong spot'
     end
     @hints
   end

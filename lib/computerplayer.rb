@@ -14,18 +14,20 @@ class ComputerPlayer
     4.times do |index|
       @code[index] = COLORS[rand(0..5)]
     end
-    p @code
+    @code
   end
 
   def computer_guess_player_code(player_code)
-    @computer_guess = [nil, nil, nil, nil]
+    # Populate correct hits
+    @computer_guess = computer_code_generate
     4.times do |index|
-      @correct_hits[index] == player_code[index] if player_code[index] == @computer_guess[index]
+      @correct_hits[index] = player_code[index] if player_code[index] == @computer_guess[index]
     end
-    4.times do |index|
-      @computer_guess[index] = @correct_hits[index] unless @correct_hits[index].nil?
-    end
+
+    # Get hints for wrong spots
     hints = @logic.get_wrong_spots(player_code, @computer_guess)
+
+    # Place hints randomly in @computer_guess
     attempts = hints.count
     attempts.times do |index|
       position = rand(0..3)
@@ -35,10 +37,22 @@ class ComputerPlayer
         @computer_guess[position] = hints[index]
       end
     end
+
+    # Fill remaining nils with random colors
     4.times do |index|
-      COLORS[rand(0..5)] unless @computer_guess[index].nil?
+      if @computer_guess[index].nil? || @computer_guess[index] == 'wrong spot'
+        @computer_guess[index] =
+          COLORS[rand(0..5)]
+      end
     end
 
-    p @computer_guess
+    # Apply correct hits back to their positions
+    4.times do |index|
+      @computer_guess[index] = @correct_hits[index] unless @correct_hits[index].nil?
+    end
+    puts "The computer has guessed: #{@computer_guess}"
+    @logic.print_hits(player_code, @computer_guess)
+    @logic.print_wrong_spots(player_code, @computer_guess)
+    @computer_guess
   end
 end

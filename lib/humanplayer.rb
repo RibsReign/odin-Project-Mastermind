@@ -3,23 +3,24 @@
 # Class that defines all the behaviors of the human player
 class HumanPlayer
   def initialize
-    @guess = []
+    @player_code = []
   end
 
   def player_code_input
     4.times do |index|
       loop do
-        p "Enter a color: [#{COLORS.join(' ')}]"
+        puts "\nEnter a color: [#{COLORS.join(' ')}]"
         input = gets.chomp.downcase
         matches = COLORS.select { |color| color.start_with?(input) }
         if matches.length == 1
-          @guess[index] = matches.first
+          p @player_code[index] = matches.first
           break
         end
         puts 'Invalid color. Try again.'
       end
     end
-    p @guess
+    puts "\nThis is your code:#{@player_code}"
+    @player_code
   end
 
   # def give_hints(computer_code, player_guess)
